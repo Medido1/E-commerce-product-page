@@ -5,7 +5,7 @@ export const GlobalContext = createContext();
 export const GlobalProvider = (({children}) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [orders, setOrders] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,7 +22,7 @@ export const GlobalProvider = (({children}) => {
 
   return (
     <GlobalContext.Provider value = {{
-      isMobile, isMenuOpen, setIsMenuOpen, orders, setOrders}}>
+      isMobile, isMenuOpen, setIsMenuOpen, totalOrders, setTotalOrders}}>
       {children}
     </GlobalContext.Provider>
   )

@@ -7,7 +7,7 @@ import cartIcon from "../assets/icon-cart.svg";
 import avatar from "../assets/image-avatar.png";
 
 function Header() {
-  const {isMobile, isMenuOpen, setIsMenuOpen} = useContext(GlobalContext)
+  const {isMobile, isMenuOpen, setIsMenuOpen, totalOrders} = useContext(GlobalContext)
 
   return (
     <header className="flex justify-between z-0 p-6 ">
@@ -25,9 +25,15 @@ function Header() {
         }
         <img src={logo} alt="sneakers logo" />
       </div>
-      <div className="flex items-center gap-4">
-        <button>
-          <img src={cartIcon} alt="cart" />
+      <div className="flex items-center gap-4 ">
+        <button className="relative">
+          <img className="h-8" src={cartIcon} alt="cart" />
+          {totalOrders > 0 && 
+            <p className="text-white px-2.5 text-sm rounded-full bg-[var(--orange)]
+              absolute -top-2 -right-2 ">
+              {totalOrders}
+            </p>
+          }
         </button>
         <img 
           className="h-8"

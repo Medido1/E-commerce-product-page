@@ -22,7 +22,8 @@ const images = [
 function ProductPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [animation, setAnimation] = useState(null);
-  const {orders, setOrders} = useContext(GlobalContext)
+  const [orders, setOrders] = useState(0);
+  const {totalOrders, setTotalOrders} = useContext(GlobalContext)
   
   function showNextImg() {
     if (currentIndex >= images.length - 1) {
@@ -57,6 +58,11 @@ function ProductPage() {
   function decrementOrders(){
     if (orders === 0) return;
     setOrders(prev => prev - 1)
+  }
+
+  function addToCart() {
+    setTotalOrders(prev => prev + orders)
+    setOrders(0)
   }
 
   return (
@@ -118,6 +124,7 @@ function ProductPage() {
           </button>
         </div>
         <button 
+          onClick={addToCart}
           className="button flex justify-center items-center gap-4 w-full mt-4 text-black
           rounded-lg mb-10">
           <img src={iconCart} alt="cart icon" />

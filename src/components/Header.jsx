@@ -10,7 +10,7 @@ function Header() {
   const {isMobile, isMenuOpen, setIsMenuOpen} = useContext(GlobalContext)
 
   return (
-    <header className="flex justify-between z-0">
+    <header className="flex justify-between z-0 p-6 ">
       <div className="flex items-center gap-4">
         {isMobile && 
           <button

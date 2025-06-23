@@ -18,8 +18,10 @@
 .button {
   border: none;
   background: var(--orange);
-  box-shadow: 0px 14px 56px -11px var(--orange);
   padding: 1em;
-  transition: all 0.4s;
   cursor: pointer;
+ }
+
+ .btn_shadow {
+  box-shadow: 0px 14px 56px -11px var(--orange);
  }

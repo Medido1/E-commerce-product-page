@@ -1,4 +1,5 @@
 import './App.css'
+import CartModal from './components/CartModal'
 import Header from './components/Header'
 import NavMenu from './components/NavMenu'
 import ProductPage from './components/ProductPage'
@@ -10,6 +11,7 @@ function App() {
       <Header />
       <NavMenu />
       <ProductPage />
+      <CartModal />
     </div>
   )
 }

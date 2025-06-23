@@ -23,7 +23,7 @@ function ProductPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [animation, setAnimation] = useState(null);
   const [orders, setOrders] = useState(0);
-  const {totalOrders, setTotalOrders} = useContext(GlobalContext)
+  const {setTotalOrders} = useContext(GlobalContext)
   
   function showNextImg() {
     if (currentIndex >= images.length - 1) {
@@ -125,7 +125,7 @@ function ProductPage() {
         </div>
         <button 
           onClick={addToCart}
-          className="button flex justify-center items-center gap-4 w-full mt-4 text-black
+          className="button btn_shadow flex justify-center items-center gap-4 w-full mt-4 text-black
           rounded-lg mb-10">
           <img src={iconCart} alt="cart icon" />
           <p>Add to Cart</p>

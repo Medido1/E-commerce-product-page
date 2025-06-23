@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import iconClose from "../assets/icon-close.svg";
 import iconMenu from "../assets/icon-menu.svg"
@@ -7,7 +7,9 @@ import cartIcon from "../assets/icon-cart.svg";
 import avatar from "../assets/image-avatar.png";
 
 function Header() {
-  const {isMobile, isMenuOpen, setIsMenuOpen, totalOrders} = useContext(GlobalContext)
+  const {isMobile, isMenuOpen, setIsMenuOpen, totalOrders
+    ,showCart, setShowCart
+  } = useContext(GlobalContext)
 
   return (
     <header className="flex justify-between z-0 p-6 ">
@@ -26,7 +28,9 @@ function Header() {
         <img src={logo} alt="sneakers logo" />
       </div>
       <div className="flex items-center gap-4 ">
-        <button className="relative">
+        <button 
+          onClick={() => setShowCart(!showCart)}
+          className="relative">
           <img className="h-8" src={cartIcon} alt="cart" />
           {totalOrders > 0 && 
             <p className="text-white px-2.5 text-sm rounded-full bg-[var(--orange)]

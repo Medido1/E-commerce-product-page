@@ -13,7 +13,7 @@ function NavMenu() {
     transition: { duration: 0.6, ease: "easeOut" }
   };
   
-
+  const navItems = ["Collections", "Men", "Women", "About", "Contact"];
   return (
     <AnimatePresence>
       {isMenuOpen && (
@@ -42,11 +42,11 @@ function NavMenu() {
             alt={"Close menu"}/>
           </button>
             <ul className="kumbh_font flex flex-col gap-4 pt-20 pl-7 z-20">
-              <li><a href="">Collections</a></li>
-              <li><a href="">Men</a></li>
-              <li><a href="">Women</a></li>
-              <li><a href="">About</a></li>
-              <li><a href="">Contact</a></li>
+              {navItems.map(item => 
+                <li key={item}>
+                  <a href="#">{item}</a>
+                </li>
+              )}
             </ul>
           </motion.nav>
         </>

@@ -31,9 +31,9 @@ function CartModal() {
           rounded-lg max-w-[350px] kumbh_font absolute  bg-white w-[96%] box`}
           {...cartAnimation}
         >
-        <p className="p-4 mb-4">
+        <h2 className="p-4 mb-4">
           Cart
-        </p>
+        </h2>
         <div className="w-full h-0.5 bg-gray-200 mb-4"></div>
         {totalOrders > 0 && 
           <div className="flex flex-col items-center">
@@ -42,7 +42,7 @@ function CartModal() {
                 className="h-16"
                 src={imgThumb} alt="thumb img" 
               />
-              <div className="flex flex-col items-c gap-2 text-[var(--grayish_blue)]">
+              <div className="flex flex-col  gap-2 text-[var(--grayish_blue)]">
                 <p>
                   Fall Limited Edition Sneakers
                 </p>
@@ -52,7 +52,12 @@ function CartModal() {
                   <span className="text-[var(--very_dark_blue)]">${parseInt(totalOrders) * 125}.00</span>
                 </p>
               </div>
-              <button onClick={deleteProduct}>
+              <button 
+                onClick={deleteProduct} 
+                aria-label="Delete product"
+                title="Remove item"
+                className="cursor-pointer"
+              >
                 <img
                   className="h-5 w-4 my-auto"
                   src={iconDelete} alt="delete product"
@@ -67,8 +72,8 @@ function CartModal() {
           </div>
         }
         {totalOrders === 0 && 
-          <p className="block p-4 pb-10 text-lg">
-            you have no orders !!
+          <p className="block p-4 pb-10 text-lg text-center text-[var(--grayish_blue)]">
+            Your cart is empty.
           </p>
         }
       </motion.div>

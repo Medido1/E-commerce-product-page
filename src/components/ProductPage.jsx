@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 
 import iconNext from "../assets/icon-next.svg";
@@ -44,6 +44,36 @@ function ProductPage() {
     setAnimation(previousAnimation)
   }
 
+  const [focusedIndex, setFocusedIndex] = useState(null);
+  const thumbRefs = useRef([]);
+
+  useEffect(() => {
+    if (focusedIndex !== null) {
+      thumbRefs.current[focusedIndex]?.focus();
+    }
+  }, [focusedIndex]);
+
+  function handleThumbnailKeyDown(e, index, thumbnails, setCurrentIndex, setFocusedIndex) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setCurrentIndex(index);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setFocusedIndex((prev) => {
+        const nextIndex = prev === thumbnails.length - 1 ? 0 : prev + 1;
+        setCurrentIndex(nextIndex); // auto-update image
+        return nextIndex;
+      });
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setFocusedIndex((prev) => {
+        const nextIndex = prev === 0 || prev === null ? thumbnails.length - 1 : prev - 1;
+        setCurrentIndex(nextIndex); // auto-update image
+        return nextIndex;
+      });
+    }
+  }
+
   return (
     <div className="md:mt-[2%] lg:flex lg:justify-center lg:gap-16 ">
       <div className="relative lg:w-[28%]">
@@ -63,9 +93,14 @@ function ProductPage() {
             {thumbnails.map((thumb, index) => (
               <li 
                 key={thumb.id} 
-                className={`relative ${index === currentIndex ? "selected" : ""}`}>
+                className={`relative ${index === currentIndex ? "selected" : ""}`}
+                tabIndex={0}
+                onClick={() => setCurrentIndex(index)}
+                ref={(el) => (thumbRefs.current[index] = el)}
+                onKeyDown={(e) => 
+                  handleThumbnailKeyDown(e, index, thumbnails, setCurrentIndex, setFocusedIndex)}
+              >
                 <img 
-                  onClick={() => setCurrentIndex(index)}
                   className={`rounded-lg cursor-pointer
                     ${index === currentIndex ? "border-2 border-orange-400" : ""}`}
                   src={thumb.url} alt="thumbnail img" />
@@ -113,15 +148,18 @@ function ProductPage() {
             bg-[var(--light_grayish_blue)] px-4 py-2 rounded-lg lg:w-[40%]">
             <button
               className="cursor-pointer"
-              onClick={() => setOrders(prev => prev + 1)}>
-              <img src={iconPlus} alt="add item" />
+              onClick={() => setOrders(prev => prev + 1)}
+              aria-label="Increase quantity"
+            >
+              <img src={iconPlus} />
             </button>
             <p>{orders}</p>
             <button
               className="cursor-pointer"
               onClick={decrementOrders}
+              aria-label="Decrease quantity"
             >
-              <img src={iconMinus} alt="remove item" />
+              <img src={iconMinus} />
             </button>
           </div>
           <button

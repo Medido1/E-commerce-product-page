@@ -54,3 +54,8 @@
   background-color: rgba(240, 240, 240, 0.6); 
   pointer-events: none;
 }
+
+/* Cart modal box shadow */
+.box {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

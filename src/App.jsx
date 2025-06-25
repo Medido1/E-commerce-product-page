@@ -7,7 +7,7 @@ import ProductPage from './components/ProductPage'
 
 function App() {
   return (
-    <div className='min-h-screen relative'>
+    <div className='min-h-screen relative overflow-hidden'>
       <Header />
       <NavMenu />
       <ProductPage />

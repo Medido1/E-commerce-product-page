@@ -1,17 +1,17 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { GlobalContext } from "../context/GlobalContext";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import imgThumb from "../assets/image-product-1-thumbnail.jpg";
 import iconDelete from "../assets/icon-delete.svg";
 
 function CartModal() {
-  const {showCart,setShowCart, totalOrders, setTotalOrders} = useContext(GlobalContext)
+  const {showCart,setShowCart, totalOrders, setTotalOrders, isMobile} = useContext(GlobalContext)
   
   const cartAnimation = {
     initial: {y:-100},
     animate: {y: 0},
+    transition: { duration: 0.6, ease: "easeOut" },
     exit: {opacity: 0, transition: { duration: 0.6, ease: "easeInOut" }},
-    transition: { duration: 0.6, ease: "easeOut" }
   }
 
   function deleteProduct() {
@@ -27,8 +27,8 @@ function CartModal() {
     <AnimatePresence>
       {showCart && 
         <motion.div
-          className="kumbh_font absolute top-[10%] left-2 bg-white w-[96%]
-          rounded-lg max-w-[500px]"
+          className={`${isMobile ? "top-[10%] left-2": "top-[12%] right-[10%]"}
+          rounded-lg max-w-[350px] kumbh_font absolute  bg-white w-[96%] box`}
           {...cartAnimation}
         >
         <p className="p-4 mb-4">

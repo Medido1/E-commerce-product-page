@@ -33,13 +33,13 @@ export const GlobalProvider = (({children}) => {
   ]
 
   const nextAnimation = {
-    initial: {x: -100, opacity: 0},
+    initial: {x: -1000, opacity: 0},
     animate: { x:0, opacity: 1},
     transition: { duration: 0.6, ease: "easeOut" }
   }
 
   const previousAnimation = {
-    initial: {x: 100, opacity: 0},
+    initial: {x: 1000, opacity: 0},
     animate: { x:0, opacity: 1},
     transition: { duration: 0.6, ease: "easeOut" }
   }

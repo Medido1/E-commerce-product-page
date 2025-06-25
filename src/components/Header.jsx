@@ -12,7 +12,7 @@ function Header() {
   } = useContext(GlobalContext)
 
   return (
-    <header className="flex justify-between z-0 p-6 md:px-12 lg:px-16 xl:px-22 relative">
+    <header className="flex justify-between p-6 md:px-12 lg:px-16 xl:px-22 relative">
       <div className="flex items-center gap-4 lg:ml-32">
         {isMobile && 
           <button
@@ -33,16 +33,18 @@ function Header() {
           className="relative cursor-pointer">
           <img className="h-8 lg:h-6" src={cartIcon} alt="cart" />
           {totalOrders > 0 && 
-            <p className="text-white px-2.5 lg:px-2 text-sm rounded-full bg-[var(--orange)]
-              absolute -top-2 -right-2 ">
+            <p className="text-white px-2.5 lg:px-2 text-sm 
+            rounded-full bg-[var(--orange)] absolute -top-2 -right-2 ">
               {totalOrders}
             </p>
           }
         </button>
-        <img 
-          className="h-8 lg:h-14 hover:border-orange-400 
-          hover:border-4 rounded-[50%] cursor-pointer"
-          src={avatar} alt="user avatar" />
+        <button className="cursor-pointer">
+          <img
+            className="h-8 lg:h-14 hover:border-orange-400
+            hover:border-4 rounded-[50%]"
+            src={avatar} alt="user avatar" />
+        </button>
       </div>
       {!isMobile &&
         <div 

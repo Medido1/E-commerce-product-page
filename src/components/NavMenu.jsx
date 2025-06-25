@@ -18,9 +18,9 @@ function NavMenu() {
     <AnimatePresence>
       {isMenuOpen && (
         <>
-          {isMobile && isMenuOpen && (
+          {isMobile && (
             <motion.div
-              className="fixed inset-0 bg-black/25 z-10"
+              className="fixed inset-0  bg-black/25 z-10"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -30,6 +30,7 @@ function NavMenu() {
           <motion.nav
             className="fixed top-0 left-0 min-h-screen w-[60vw] bg-white z-10"
             {...navAnimation}
+            role="navigation"
           >
             <button
               className="absolute top-8 left-6"
@@ -40,12 +41,12 @@ function NavMenu() {
             src={iconClose} 
             alt={"Close menu"}/>
           </button>
-            <ul className="kumbh_font flex flex-col gap-4 pt-22 pl-7 z-20">
-              <li>Collections</li>
-              <li>Men</li>
-              <li>Women</li>
-              <li>About</li>
-              <li>Contact</li>
+            <ul className="kumbh_font flex flex-col gap-4 pt-20 pl-7 z-20">
+              <li><a href="">Collections</a></li>
+              <li><a href="">Men</a></li>
+              <li><a href="">Women</a></li>
+              <li><a href="">About</a></li>
+              <li><a href="">Contact</a></li>
             </ul>
           </motion.nav>
         </>

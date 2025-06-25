@@ -27,7 +27,7 @@ function CartModal() {
     <AnimatePresence>
       {showCart && 
         <motion.div
-          className={`${isMobile ? "top-[10%] left-2": "top-[12%] right-[10%]"}
+          className={`${isMobile ? "top-[10%] left-1/2 -translate-x-1/2": "top-[12%] right-[10%]"}
           rounded-lg max-w-[350px] kumbh_font absolute  bg-white w-[96%] box`}
           {...cartAnimation}
         >

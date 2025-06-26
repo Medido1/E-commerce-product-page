@@ -7,13 +7,14 @@ import iconPrevious from "../assets/icon-previous.svg";
 function ImageGallery() {
   const {isMobile,images, thumbnails,
     animation,setAnimation, nextAnimation, 
-    previousAnimation, setIsLightBox
+    previousAnimation, setIsLightBox,
   } = useContext(GlobalContext)
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [focusedIndex, setFocusedIndex] = useState(null);
   const thumbRefs = useRef([]);
 
+  
   useEffect(() => {
     if (focusedIndex !== null) {
       thumbRefs.current[focusedIndex]?.focus();

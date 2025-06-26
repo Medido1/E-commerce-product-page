@@ -1,8 +1,6 @@
 import { GlobalContext } from "../context/GlobalContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { useContext, useState } from "react";
-import iconCloseWhite from "../assets/icon-close-white.svg"
-import iconCloseOrange from "../assets/icon-close-orange.svg"
+import { useContext, useState, useRef, useEffect } from "react";
 import iconNext from "../assets/icon-next.svg";
 import iconPrevious from "../assets/icon-previous.svg";
 
@@ -11,7 +9,7 @@ function LightBoxGallery() {
     isLightBox, setIsLightBox, isMobile, setAnimation
   } = useContext(GlobalContext)
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [src, setSrc] = useState(iconCloseWhite);
+  const [focusedIndex, setFocusedIndex] = useState(null);
 
   const lightBoxAnimation = {
     initial: { scale: 0 },
@@ -21,9 +19,11 @@ function LightBoxGallery() {
 
   function showNextImg() {
     if (currentIndex >= images.length - 1) {
-      setCurrentIndex(0)
+      setCurrentIndex(0);
+      setFocusedIndex(0);
     } else {
       setCurrentIndex(currentIndex + 1)
+      setFocusedIndex(currentIndex + 1)
     }
     setAnimation(nextAnimation)
   }
@@ -31,11 +31,62 @@ function LightBoxGallery() {
   function showPreviousImg() {
     if (currentIndex === 0){
       setCurrentIndex(images.length - 1)
+      setFocusedIndex(images.length - 1)
     } else {
       setCurrentIndex(currentIndex - 1)
+      setFocusedIndex(currentIndex - 1)
     }
     setAnimation(previousAnimation)
   }
+
+  const thumbRefs = useRef([]);
+
+  useEffect(() => {
+    if (isLightBox) {
+      setFocusedIndex(currentIndex);
+    }
+  }, [isLightBox]);
+
+  useEffect(() => {
+    if (focusedIndex !== null) {
+      thumbRefs.current[focusedIndex]?.focus();
+    }
+  }, [focusedIndex]);
+
+  function handleThumbnailKeyDown(e, index) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setCurrentIndex(index);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setFocusedIndex((prev) => {
+        const nextIndex = prev === thumbnails.length - 1 ? 0 : prev + 1;
+        setCurrentIndex(nextIndex); // auto-update image
+        return nextIndex;
+      });
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setFocusedIndex((prev) => {
+        const nextIndex = prev === 0 || prev === null ? thumbnails.length - 1 : prev - 1;
+        setCurrentIndex(nextIndex); // auto-update image
+        return nextIndex;
+      });
+    }
+  }
+
+  // use escape key to exit lightbox
+  useEffect(() => {
+    function handleEscape(e) {
+      if (e.key === "Escape") {
+        setIsLightBox(false);
+      }
+    }
+    if (isLightBox) {
+      window.addEventListener("keydown", handleEscape);
+    }
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isLightBox]);
+  
   return (
     <AnimatePresence>
       {isLightBox &&!isMobile && (
@@ -53,12 +104,12 @@ function LightBoxGallery() {
           >
             <button 
               className="cursor-pointer"
-              onClick={() => setIsLightBox(false)}>
+              onClick={() => setIsLightBox(false)}
+              title="exit gallery"
+            >
               <img 
-                className="absolute right-0 -top-4 h-6"
-                src={src} alt="close lightbox" 
-                onMouseEnter={() => setSrc(iconCloseOrange)}
-                onMouseLeave={() => setSrc(iconCloseWhite)}
+                className="close-btn absolute right-0 -top-4 h-6"
+                alt="close lightbox" 
               />  
             </button>   
             <AnimatePresence mode="wait">
@@ -72,13 +123,15 @@ function LightBoxGallery() {
             </AnimatePresence>
             <button 
               onClick={showNextImg} 
+              title="show next image"
               className="absolute top-[40%] -right-6 hover:h-16
                 bg-white px-4 py-3 rounded-[50%] cursor-pointer">
                 <img
                   src={iconNext} alt="next image" />
             </button>
             <button 
-              onClick={showPreviousImg} 
+              onClick={showPreviousImg}
+              title="show previous image" 
               className="absolute top-[40%] -left-6 hover:h-16
               bg-white px-4 py-3 rounded-[50%] cursor-pointer">
               <img
@@ -86,9 +139,16 @@ function LightBoxGallery() {
             </button>
             <ul className="flex gap-4 mt-4 pb-4">
               {thumbnails.map((thumb, index) => (
-                <li 
+                <li
+                  tabIndex={0} 
+                  ref={(el) => (thumbRefs.current[index] = el)}
+                  onKeyDown={(e) => 
+                  handleThumbnailKeyDown(e, index)}
                   key={thumb.id} 
-                  onClick={() => setCurrentIndex(index)}
+                  onClick={() => {
+                    setCurrentIndex(index)
+                    setFocusedIndex(index)
+                  }}
                   className={`relative ${index === currentIndex ? "selected" : ""}`}>
                     <img 
                       className={`rounded-lg cursor-pointer

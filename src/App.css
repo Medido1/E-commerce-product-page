@@ -59,3 +59,12 @@
 .box {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+
+/* change icon on hover */
+img.close-btn {
+  content: url("../src/assets/icon-close-white.svg");
+}
+
+img.close-btn:hover {
+  content: url("../src/assets/icon-close-orange.svg");
+}

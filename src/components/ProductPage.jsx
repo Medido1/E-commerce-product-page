@@ -1,20 +1,14 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState} from "react";
 import { GlobalContext } from "../context/GlobalContext";
+import ImageGallery from "./ImageGallery";
 
-import iconNext from "../assets/icon-next.svg";
-import iconPrevious from "../assets/icon-previous.svg";
 import iconPlus from "../assets/icon-plus.svg";
 import iconMinus from "../assets/icon-minus.svg";
 import iconCart from "../assets/icon-cart.svg";
 
 function ProductPage() {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [orders, setOrders] = useState(0);
-  const {setTotalOrders, isMobile,images, thumbnails,
-    animation,setAnimation, nextAnimation, previousAnimation,
-    setIsLightBox
-  } = useContext(GlobalContext)
+  const {setTotalOrders} = useContext(GlobalContext)
   
   function decrementOrders(){
     if (orders === 0) return;
@@ -26,102 +20,9 @@ function ProductPage() {
     setOrders(0)
   }
 
-  function showNextImg() {
-    if (currentIndex >= images.length - 1) {
-      setCurrentIndex(0)
-    } else {
-      setCurrentIndex(currentIndex + 1)
-    }
-    setAnimation(nextAnimation)
-  }
-  
-  function showPreviousImg() {
-    if (currentIndex === 0){
-      setCurrentIndex(images.length - 1)
-    } else {
-      setCurrentIndex(currentIndex - 1)
-    }
-    setAnimation(previousAnimation)
-  }
-
-  const [focusedIndex, setFocusedIndex] = useState(null);
-  const thumbRefs = useRef([]);
-
-  useEffect(() => {
-    if (focusedIndex !== null) {
-      thumbRefs.current[focusedIndex]?.focus();
-    }
-  }, [focusedIndex]);
-
-  function handleThumbnailKeyDown(e, index, thumbnails, setCurrentIndex, setFocusedIndex) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      setCurrentIndex(index);
-    } else if (e.key === "ArrowRight") {
-      e.preventDefault();
-      setFocusedIndex((prev) => {
-        const nextIndex = prev === thumbnails.length - 1 ? 0 : prev + 1;
-        setCurrentIndex(nextIndex); // auto-update image
-        return nextIndex;
-      });
-    } else if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      setFocusedIndex((prev) => {
-        const nextIndex = prev === 0 || prev === null ? thumbnails.length - 1 : prev - 1;
-        setCurrentIndex(nextIndex); // auto-update image
-        return nextIndex;
-      });
-    }
-  }
-
   return (
     <div className="md:mt-[2%] lg:flex lg:justify-center lg:gap-16 ">
-      <div className="relative lg:w-[28%]">
-        <AnimatePresence mode="wait">
-          <motion.img
-            onClick={() => setIsLightBox(true)}
-            className="rounded-xl relative cursor-pointer"
-            key={images[currentIndex].id}
-            src={images[currentIndex].url}
-            alt={images[currentIndex].name}
-            {...animation}
-          >
-          </motion.img>
-        </AnimatePresence>
-        {!isMobile && 
-          <ul className="flex gap-4 mt-4 pb-4">
-            {thumbnails.map((thumb, index) => (
-              <li 
-                key={thumb.id} 
-                className={`relative ${index === currentIndex ? "selected" : ""}`}
-                tabIndex={0}
-                onClick={() => setCurrentIndex(index)}
-                ref={(el) => (thumbRefs.current[index] = el)}
-                onKeyDown={(e) => 
-                  handleThumbnailKeyDown(e, index, thumbnails, setCurrentIndex, setFocusedIndex)}
-              >
-                <img 
-                  className={`rounded-lg cursor-pointer
-                    ${index === currentIndex ? "border-2 border-orange-400" : ""}`}
-                  src={thumb.url} alt="thumbnail img" />
-              </li>
-            ))}
-          </ul>
-        }
-        <button 
-          onClick=
-          {showNextImg} 
-          className="lg:hidden absolute top-[40%] right-2 bg-white px-4 py-3 rounded-[50%]">
-          <img
-            src={iconNext} alt="next image" />
-        </button>
-        <button 
-          onClick={showPreviousImg} 
-          className="lg:hidden absolute top-[40%] left-2 bg-white px-4 py-3 rounded-[50%]">
-          <img
-            src={iconPrevious} alt="previous image" />
-        </button>
-      </div>
+      <ImageGallery />
       <div className="p-4 kumbh_font lg:w-[32%]  lg:mt-[2%]">
         <p className="uppercase tracking-widest text-[var(--dark_grayish_blue)]">
           Sneaker Company
@@ -150,6 +51,7 @@ function ProductPage() {
               className="cursor-pointer"
               onClick={() => setOrders(prev => prev + 1)}
               aria-label="Increase quantity"
+              title="Increase quantity"
             >
               <img src={iconPlus} />
             </button>
@@ -158,6 +60,7 @@ function ProductPage() {
               className="cursor-pointer"
               onClick={decrementOrders}
               aria-label="Decrease quantity"
+              title="Decrease quantity"
             >
               <img src={iconMinus} />
             </button>
